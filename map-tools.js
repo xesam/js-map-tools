@@ -23,15 +23,6 @@ function stepLng(map, lat, lngStep) {
     return ret;
 }
 
-function stepLat(map, lng, latStep) {
-    var ret = [];
-    for (var i = 1; i <= 9; i++) {
-        var dis = latStep * i;
-        ret.push([dis, getDistance(map, lng, 1, lng, 1 + dis)]);
-    }
-    return ret;
-}
-
 function stepLngMapper(map, lat, steps = defaultSteps){
     var lngMapper = [];
     steps.forEach(function (step) {
@@ -39,6 +30,15 @@ function stepLngMapper(map, lat, steps = defaultSteps){
         lngMapper = lngMapper.concat(stepValues);
     });
     return lngMapper;
+}
+
+function stepLat(map, lng, latStep) {
+    var ret = [];
+    for (var i = 1; i <= 9; i++) {
+        var dis = latStep * i;
+        ret.push([dis, getDistance(map, lng, 1, lng, 1 + dis)]);
+    }
+    return ret;
 }
 
 function stepLatMapper(map, lng, steps = defaultSteps){
