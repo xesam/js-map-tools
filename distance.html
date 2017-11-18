@@ -9,13 +9,36 @@
     <style type="text/css">
         body,
         html,
-        #page {
+        #page,
+        #content {
             width: 100%;
             height: 100%;
             overflow: hidden;
             margin: 0;
             padding: 0;
             font-family: "微软雅黑";
+            font-size: 12px;
+        }
+
+        #content>div {
+            height: 100%;
+            width: 49%;
+            display: inline-block;
+            overflow: hidden;
+        }
+
+        #content>div>div {
+            height: 10%;
+            overflow: auto;
+            padding-left: 24px;
+        }
+
+        #content>div>ul {
+            margin: 0;
+            padding: 0;
+            list-style-type: none;
+            height: 90%;
+            overflow: auto;
         }
     </style>
 </head>
@@ -23,15 +46,86 @@
 <body>
     <div id="page">
         <div id="content">
-            <input type="text">
+            <div id="lng-mapper">
+                <div>
+                    <div>
+                        <label for="lat">lat:</label>
+                        <input type="text" id="lat" v-model.number="lat" placeholder="lat">
+                    </div>
+                    <div>
+                        <label for="lng-step">lng-step:</label>
+                        <input type="text" id="lng-step" v-model.number="lng_step" placeholder="lng-step">
+                    </div>
+                </div>
+                <ul>
+                    <li v-for="(lng, index) in lngs">
+                        {{ lng[0] }} => {{ lng[1] }}
+                    </li>
+                </ul>
+            </div>
+            <div id="lat-mapper">
+                <div>
+                    <div>
+                        <label for="lat">lng:</label>
+                        <input type="text" id="lng" v-model.number="lng" placeholder="lng">
+                    </div>
+                    <div>
+                        <label for="lat-step">lat-step:</label>
+                        <input type="text" id="lat-step" v-model.number="lat_step" placeholder="lat-step">
+                    </div>
+                </div>
+                <ul>
+                    <li v-for="(lat, index) in lats">
+                        {{ lat[0] }} => {{ lat[1] }}
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
+    <script src="https://unpkg.com/vue"></script>
     <script src="map-tools.js"></script>
     <script>
-        var map = new BMap.Map();    // 创建Map实例
-        // console.log(stepLngMapper(map, China.SOUTH));
-        // console.log(stepLatMapper(map, China.WEST));
-
+        var map = new BMap.Map("map");
+        var vmLng = new Vue({
+            el: '#lng-mapper',
+            data: {
+                map: map,
+                lat: '',
+                lng_step: ''
+            },
+            computed: {
+                lngs: function () {
+                    if (this.lat < China.SOUTH || this.lat > China.NORTH) {
+                        return [];
+                    }
+                    if(this.lng_step){
+                        return stepLngMapper(this.map, this.lat, [this.lng_step]);
+                    }else{
+                        return stepLngMapper(this.map, this.lat);
+                    }
+                }
+            }
+        });
+        var vmLat = new Vue({
+            el: '#lat-mapper',
+            data: {
+                map: map,
+                lng: '',
+                lat_step: ''
+            },
+            computed: {
+                lats: function () {
+                    if (this.lng < China.WEST || this.lng > China.EAST) {
+                        return [];
+                    }
+                    if(this.lat_step){
+                        return stepLngMapper(this.map, this.lng, [this.lat_step]);
+                    }else{
+                        return stepLngMapper(this.map, this.lng);
+                    }
+                }
+            }
+        });
     </script>
 </body>
 

@@ -17,8 +17,9 @@ function getDistance(map, sLng, sLat, eLng, eLat) {
 function stepLng(map, lat, lngStep) {
     var ret = [];
     for (var i = 1; i <= 9; i++) {
-        var dis = lngStep * i;
-        ret.push([dis, getDistance(map, 1, lat, 1 + dis, lat)]);
+        var delta = lngStep * i;
+        var mapDistance = getDistance(map, 1, lat, 1 + delta, lat);
+        ret.push([delta, mapDistance]);
     }
     return ret;
 }
@@ -35,8 +36,9 @@ function stepLngMapper(map, lat, steps = defaultSteps){
 function stepLat(map, lng, latStep) {
     var ret = [];
     for (var i = 1; i <= 9; i++) {
-        var dis = latStep * i;
-        ret.push([dis, getDistance(map, lng, 1, lng, 1 + dis)]);
+        var delta = latStep * i;
+        var mapDistance = getDistance(map, lng, 1, lng, 1 + delta);
+        ret.push([delta, mapDistance]);
     }
     return ret;
 }
