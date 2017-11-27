@@ -1,6 +1,6 @@
 function MoveMarker(marker) {
     this.marker = marker;
-    this.speed = 100000;
+    this.speed = 4000;
     this.fps = 60;
     this.path = [];
     this.point_index = 0;
@@ -33,7 +33,7 @@ MoveMarker.prototype.moveTo = function (to, running_cbk, finish_cbk) {
 
 MoveMarker.prototype._moveNext = function () {
     if (this.point_index >= this.path.length) {
-        console.log('point-finished');
+        console.log('path-finished');
         return;
     }
     var _this = this;
@@ -53,6 +53,11 @@ MoveMarker.prototype.start = function () {
     this._moveNext();
 }
 
+MoveMarker.prototype.reset = function () {
+    this.point_index = 0;
+    clearInterval(this._interval_flag);
+}
+
 MoveMarker.prototype.addPath = function (points) {
     this.path = this.path.concat(points);
 }
@@ -63,6 +68,19 @@ MoveMarker.prototype.updatePath = function (points, includeCurrent) {
 
 MoveMarker.prototype.stop = function () {
     clearInterval(this._interval_flag);
+}
+
+MoveMarker.prototype.pause = function () {
+    clearInterval(this._interval_flag);
+}
+
+MoveMarker.prototype.resume = function () {
+    clearInterval(this._interval_flag);
+}
+
+MoveMarker.prototype.restart = function () {
+    this.stop();
+    this.start();
 }
 
 function move_tick(from, to, speed, fps, running_cbk, finish_cbk) {

@@ -16,11 +16,25 @@
             margin: 0;
             font-family: "微软雅黑";
         }
+        #ctrl{
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
     </style>
 </head>
 
 <body>
     <div id="container"></div>
+    <div id="ctrl">
+        <button id="start">start</button>
+        <button id="stop">stop</button>
+        <button id="pause">pause</button>
+        <button id="resume">resume</button>
+        <button id="restart">restart</button>
+        <button id="addPath">addPath</button>
+        <button id="updatePath">updatePath</button>
+    </div>
     <script src="location-player.js"></script>
     <script src="move-marker.js"></script>
     <script>
@@ -37,9 +51,9 @@
         map.setCurrentCity("天津");          // 设置地图显示的城市 此项是必须设置的
         map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 
-        var startPoint =  new BMap.Point(117.27655869759884, 39.06165123919057);
-        var middlePoint =  new BMap.Point(117.27655869759884, 40.06165123919057);
-        var endPoint =  new BMap.Point(118.27655869759884, 40.06165123919057);
+        var startPoint  =  new BMap.Point(117.27655869759884, 39.06165123919057);
+        var middlePoint =  new BMap.Point(117.37655869759884, 39.06165123919057);
+        var endPoint    =  new BMap.Point(117.37655869759884, 39.16165123919057);
 
         console.log(map.getDistance(startPoint, endPoint));
 
@@ -62,8 +76,38 @@
         var moveMarker = new MoveMarker(marker);
         // moveMarker.moveTo(endPixel);
         moveMarker.addPath([middlePixel, endPixel]);
-        moveMarker.start();
-        
+
+        function _click(id, fn){
+            document.getElementById(id).addEventListener('click', fn);
+        }
+
+        _click('start', function(){
+            moveMarker.start();
+        });
+
+        _click('stop', function(){
+            moveMarker.stop();
+        });
+
+        _click('pause', function(){
+            moveMarker.pause();
+        });
+
+        _click('resume', function(){
+            moveMarker.resume();
+        });
+
+        _click('restart', function(){
+            moveMarker.restart();
+        });
+
+        _click('addPath', function(){
+            moveMarker.addPath();
+        });
+
+        _click('updatePath', function(){
+            moveMarker.updatePath();
+        });
 
 
     </script>
