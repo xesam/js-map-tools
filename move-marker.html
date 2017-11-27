@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ttwaH5NADcpIkNc7wfMpKBpK"></script>
+    <title>map</title>
+    <style type="text/css">
+        body,
+        html,
+        #container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            margin: 0;
+            font-family: "微软雅黑";
+        }
+    </style>
+</head>
+
+<body>
+    <div id="container"></div>
+    <script src="location-player.js"></script>
+    <script src="move-marker.js"></script>
+    <script>
+        
+        var map = new BMap.Map("container");    // 创建Map实例
+        map.centerAndZoom(new BMap.Point(117.27655869759884, 39.06165123919057), 11);  // 初始化地图,设置中心点坐标和地图级别
+        //添加地图类型控件
+        map.addControl(new BMap.MapTypeControl({
+            mapTypes: [
+                BMAP_NORMAL_MAP,
+                BMAP_HYBRID_MAP
+            ]
+        }));
+        map.setCurrentCity("天津");          // 设置地图显示的城市 此项是必须设置的
+        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
+
+        var startPoint =  new BMap.Point(117.27655869759884, 39.06165123919057);
+        var middlePoint =  new BMap.Point(117.27655869759884, 40.06165123919057);
+        var endPoint =  new BMap.Point(118.27655869759884, 40.06165123919057);
+
+        console.log(map.getDistance(startPoint, endPoint));
+
+        var marker = new BMap.Marker(startPoint);
+        map.addOverlay(marker);
+
+        var end_marker = new BMap.Marker(endPoint);
+        map.addOverlay(end_marker);
+
+        var curr = 1;
+        var _projection = map.getMapType().getProjection();
+        var startPixel = _projection.lngLatToPoint(startPoint);
+        var middlePixel = _projection.lngLatToPoint(middlePoint);
+        var endPixel = _projection.lngLatToPoint(endPoint);
+
+        var stepX = (endPixel.x - startPixel.x) / 1000;
+        var stepY = (endPixel.y - startPixel.y) / 1000;
+
+
+        var moveMarker = new MoveMarker(marker);
+        // moveMarker.moveTo(endPixel);
+        moveMarker.addPath([middlePixel, endPixel]);
+        moveMarker.start();
+        
+
+
+    </script>
+</body>
+
+</html>
