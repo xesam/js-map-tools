@@ -83,6 +83,15 @@ MoveMarker.prototype.restart = function () {
     this.start();
 }
 
+MoveMarker.prototype.pauseForLandmark = function (landmark) {
+    
+}
+
+MoveMarker.prototype.speed = function (newSpeed) {
+    
+}
+
+
 function move_tick(from, to, speed, fps, running_cbk, finish_cbk) {
     var frame_duration = 1000 / fps;
     var delta_x = to.x - from.x;
