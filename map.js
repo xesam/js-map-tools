@@ -11,71 +11,77 @@ function initMap() {
   return map;
 }
 
-function addIndexMarker(map, opts) {
-  var pt;
-  if(opts['point']){
-    pt = opts['point'];
-  }else if(opts['lng'] && opts['lat']){
-    pt = new BMap.Point(opts['lng'], opts['lat']);
-  }
-  var index = opts['index'] || 0;
-
-  var marker = new BMap.Marker(pt);
-  map.addOverlay(marker);
-
-  var label = new BMap.Label(index + "", {
-    position: pt
-  }); 
-  label.setStyle({
-    color: "red",
-    fontSize: "12px",
-    height: "20px",
-    lineHeight: "20px"
-  });
-  map.addOverlay(label);
-  return marker;
-}
-
-function getLocation(overlay){
-  if(overlay["getPosition"]){
+function getOverlayLocation(overlay) {
+  if (overlay["getPosition"]) {
     var position = overlay.getPosition();
     return {
-      lng:position.lng,
-      lat:position.lat
-    }
-  }else{
-    throw new Error('no getPosition');
+      lng: position.lng,
+      lat: position.lat
+    };
+  } else {
+    throw new Error("no getPosition");
   }
 }
 
-function getLocations(overlays){
+function getOverlayLocations(overlays) {
   var ret = [];
-  overlays.forEach(function(item, index){
-    var location = getLocation(item);
+  overlays.forEach(function(item, index) {
+    var location = getOverlayLocation(item);
     ret.push(location);
   });
   return ret;
 }
 
-function toMapPoint(location){
-  return new BMap.Point(location['lng'], location['lat']);
+function toLocation(lng, lat, reverse) {
+  return reverse
+    ? {
+        lng: lat,
+        lat: lng
+      }
+    : {
+        lng: lng,
+        lat: lat
+      };
 }
 
-function toMapPoints(locations){
+function toLocations(locs) {
   var ret = [];
-  locations.forEach(function(item, index){
+  var pairCount = Math.floor(locs.length / 2);
+  for (var index = 0; index < pairCount; index++) {
+    var loc = toLocation(locs[index * 2], locs[index * 2 + 1]);
+    ret.push(loc);
+  }
+  return ret;
+}
+
+function toMapPoint(location) {
+  return new BMap.Point(location["lng"], location["lat"]);
+}
+
+function toMapPoints(locations) {
+  var ret = [];
+  locations.forEach(function(item, index) {
     ret.push(toMapPoint(item));
   });
   return ret;
 }
 
-function addMapMarker(map, mapPoint){
+function addMapMarker(map, mapPoint) {
   var marker = new BMap.Marker(mapPoint);
   map.addOverlay(marker);
   return marker;
 }
 
+function addIndexMarker(map, index, point) {
+  var pt = new BMap.Point(point["lng"], point["lat"]);
+  var marker = addMapMarker(map, pt);
+
+  var label = new BMap.Label(index + "", {
+    position: pt
+  });
+  
+  map.addOverlay(label);
+  return marker;
+}
+
 var map = initMap();
-
-
-
