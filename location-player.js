@@ -22,16 +22,16 @@ LocationPlayer.prototype.updatePoints = function(points){
     this.points = points;
 }
 
-LocationPlayer.prototype.next = function(nextCbk, noMoreCbk){
+LocationPlayer.prototype.next = function(playCbk, noMoreCbk){
     if(this.playIndex >= this.points.length){
         if(noMoreCbk){
             noMoreCbk();
         }
         return;
     }
-    this.playIndex++;
-    if(nextCbk){
-        var nextPoint = this.points[this.playIndex];
-        nextCbk(nextPoint);
+    if(playCbk){
+        var playPoint = this.points[this.playIndex];
+        playCbk(playPoint, this.playIndex, this.points.length);
     }
+    this.playIndex++;
 }

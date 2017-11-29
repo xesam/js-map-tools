@@ -1,14 +1,13 @@
 function initMap() {
   var map = new BMap.Map("map_container"); // 创建Map实例
-  map.centerAndZoom(new BMap.Point(117.27655869759884, 39.06165123919057), 11); // 初始化地图,设置中心点坐标和地图级别
+  map.centerAndZoom(new BMap.Point(117.27655869759884, 39.06165123919057), 14); // 初始化地图,设置中心点坐标和地图级别
   //添加地图类型控件
   map.addControl(
     new BMap.MapTypeControl({
       mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
     })
   );
-  map.setCurrentCity("天津"); // 设置地图显示的城市 此项是必须设置的
-  map.enableScrollWheelZoom(true); //开启鼠标滚轮缩放
+  map.enableScrollWheelZoom(true);
   return map;
 }
 
@@ -68,6 +67,12 @@ function toMapPoints(locations){
     ret.push(toMapPoint(item));
   });
   return ret;
+}
+
+function addMapMarker(map, mapPoint){
+  var marker = new BMap.Marker(mapPoint);
+  map.addOverlay(marker);
+  return marker;
 }
 
 var map = initMap();

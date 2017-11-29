@@ -4,29 +4,13 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ttwaH5NADcpIkNc7wfMpKBpK"></script>
     <title>map</title>
-    <style type="text/css">
-        body,
-        html,
-        #container {
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            margin: 0;
-            font-family: "微软雅黑";
-        }
-        #ctrl{
-            position: absolute;
-            top: 0;
-            left: 0;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="map.css">
 </head>
 
 <body>
-    <div id="container"></div>
-    <div id="ctrl">
+    <div id="map_container"></div>
+    <div id="map_control">
         <button id="start">start</button>
         <button id="next">next</button>
         <button id="stop">stop</button>
@@ -36,53 +20,59 @@
         <button id="addPath">addPath</button>
         <button id="updatePath">updatePath</button>
     </div>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ttwaH5NADcpIkNc7wfMpKBpK"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="map.js"></script>
     <script src="location-player.js"></script>
     <script>
-        
-        var map = new BMap.Map("container");    // 创建Map实例
-        map.centerAndZoom(new BMap.Point(117.27655869759884, 39.06165123919057), 11);  // 初始化地图,设置中心点坐标和地图级别
-        //添加地图类型控件
-        map.addControl(new BMap.MapTypeControl({
-            mapTypes: [
-                BMAP_NORMAL_MAP,
-                BMAP_HYBRID_MAP
-            ]
-        }));
-        map.setCurrentCity("天津");          // 设置地图显示的城市 此项是必须设置的
-        map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 
-        var player = new LocationPlayer();
+        var locations = [
+            { "lng": 117.242926, "lat": 39.074929 }, 
+            { "lng": 117.264773, "lat": 39.078514 },
+            { "lng": 117.281302, "lat": 39.080643 }, 
+            { "lng": 117.290932, "lat": 39.070223 }, 
+            { "lng": 117.272822, "lat": 39.058906 }, 
+            { "lng": 117.260605, "lat": 39.054311 }, 
+            { "lng": 117.23344, "lat": 39.048819 }, 
+            { "lng": 117.211306, "lat": 39.061147 }
+        ];
 
+        var points = toMapPoints(locations);
 
-        function _click(id, fn){
+        var player = new LocationPlayer(points);
+
+        function _click(id, fn) {
             document.getElementById(id).addEventListener('click', fn);
         }
 
-        _click('start', function(){
+        _click('start', function () {
         });
 
-        _click('next', function(){
-            player.next(null, function(){
+        _click('next', function () {
+            player.next(function(point, playIndex, total){
+                console.log(point, playIndex, total);
+                addMapMarker(map, point);
+            }, function () {
                 console.log('empty');
             });
         });
 
-        _click('stop', function(){
+        _click('stop', function () {
         });
 
-        _click('pause', function(){
+        _click('pause', function () {
         });
 
-        _click('resume', function(){
+        _click('resume', function () {
         });
 
-        _click('restart', function(){
+        _click('restart', function () {
         });
 
-        _click('addPath', function(){
+        _click('addPath', function () {
         });
 
-        _click('updatePath', function(){
+        _click('updatePath', function () {
         });
 
 
