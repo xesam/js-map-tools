@@ -11,12 +11,12 @@
 <body>
     <div id="map_container"></div>
     <div id="map_control">
-        <button id="start">start</button>
+        <button id="play">play</button>
         <button id="next">next</button>
         <button id="stop">stop</button>
         <button id="pause">pause</button>
         <button id="resume">resume</button>
-        <button id="restart">restart</button>
+        <button id="replay">replay</button>
         <button id="addPath">addPath</button>
         <button id="updatePath">updatePath</button>
     </div>
@@ -43,38 +43,54 @@
         // ];
 
         var points = toMapPoints(locations);
-        console.log(points)
 
-        var player = new LocationPlayer(points);
+        var player = new LocationPlayer(points)
+            .onPlay(function (point, playIndex, total) {
+                if (playIndex == 0) {
+                    map.setCenter(point);
+                }
+                addIndexMarker(map, playIndex, point);
+                console.log('onPlay', playIndex);
+            })
+            .onPause(function(){
+                console.log('onPause');
+            })
+            .onResume(function(){
+                console.log('onResume');
+            })
+            .onStop(function(){
+                console.log('onStop');
+            })
+            .onFinish(function () {
+                console.log('onFinish');
+            });
 
         function _click(id, fn) {
             document.getElementById(id).addEventListener('click', fn);
         }
 
-        _click('start', function () {
+        _click('play', function () {
+            player.play();
         });
 
         _click('next', function () {
-            player.next(function (point, playIndex, total) {
-                if(playIndex == 0){
-                    map.setCenter(point);
-                }
-                addIndexMarker(map, playIndex, point);
-            }, function () {
-                console.log('empty');
-            });
+            player.next();
         });
 
         _click('stop', function () {
+            player.stop();
         });
 
         _click('pause', function () {
+            player.pause();
         });
 
         _click('resume', function () {
+            player.resume();
         });
 
-        _click('restart', function () {
+        _click('replay', function () {
+            player.replay();
         });
 
         _click('addPath', function () {
