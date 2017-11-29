@@ -28,6 +28,7 @@
     <div id="container"></div>
     <div id="ctrl">
         <button id="start">start</button>
+        <button id="next">next</button>
         <button id="stop">stop</button>
         <button id="pause">pause</button>
         <button id="resume">resume</button>
@@ -50,37 +51,38 @@
         map.setCurrentCity("天津");          // 设置地图显示的城市 此项是必须设置的
         map.enableScrollWheelZoom(true);     //开启鼠标滚轮缩放
 
+        var player = new LocationPlayer();
+
 
         function _click(id, fn){
             document.getElementById(id).addEventListener('click', fn);
         }
 
         _click('start', function(){
-            moveMarker.start();
+        });
+
+        _click('next', function(){
+            player.next(null, function(){
+                console.log('empty');
+            });
         });
 
         _click('stop', function(){
-            moveMarker.stop();
         });
 
         _click('pause', function(){
-            moveMarker.pause();
         });
 
         _click('resume', function(){
-            moveMarker.resume();
         });
 
         _click('restart', function(){
-            moveMarker.restart();
         });
 
         _click('addPath', function(){
-            moveMarker.addPath();
         });
 
         _click('updatePath', function(){
-            moveMarker.updatePath();
         });
 
 

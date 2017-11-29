@@ -4,17 +4,29 @@
 //resume
 //restart
 
-function LocationPlay(){
-    this.points = [];
+function LocationPlayer(points){
+    this.points = points || [];
     this.playIndex = 0;
 }
 
-LocationPlay.prototype.reset = function(cbk){
+LocationPlayer.prototype.reset = function(cbk){
     this.playIndex = 0;
 }
 
-LocationPlay.prototype.next = function(nextCbk){
+LocationPlayer.prototype.addPoints = function(points){
+    this.points = this.points.concat(points);
+}
+
+LocationPlayer.prototype.updatePoints = function(points){
+    this.reset();
+    this.points = points;
+}
+
+LocationPlayer.prototype.next = function(nextCbk, noMoreCbk){
     if(this.playIndex >= this.points.length){
+        if(noMoreCbk){
+            noMoreCbk();
+        }
         return;
     }
     this.playIndex++;
