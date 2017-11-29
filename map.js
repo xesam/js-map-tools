@@ -55,6 +55,9 @@ function toLocations(locs) {
 }
 
 function toMapPoint(location) {
+  if(location.constructor == Array){
+    return new BMap.Point(location[0], location[1]);
+  }
   return new BMap.Point(location["lng"], location["lat"]);
 }
 
@@ -66,20 +69,21 @@ function toMapPoints(locations) {
   return ret;
 }
 
-function addMapMarker(map, mapPoint) {
+function addMarker(map, point) {
+  var mapPoint = toMapPoint(point);
   var marker = new BMap.Marker(mapPoint);
   map.addOverlay(marker);
   return marker;
 }
 
 function addIndexMarker(map, index, point) {
-  var pt = new BMap.Point(point["lng"], point["lat"]);
-  var marker = addMapMarker(map, pt);
+  var mapPoint = toMapPoint(point);
+  var marker = addMarker(map, mapPoint);
 
   var label = new BMap.Label(index + "", {
-    position: pt
+    position: mapPoint
   });
-  
+
   map.addOverlay(label);
   return marker;
 }
