@@ -1,0 +1,74 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="map.css">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=9ab008b291ee69781485ab1adce836d8"></script>
+</head>
+
+<body>
+    <div id="map_container" style="width:100%; height:100%;"></div>
+    <div id="map_control">
+        <div>
+            <button id="patch_add">+patch</button>
+            <button id="patch_minus">-patch</button>
+            <button id="rotation_add">+rotation</button>
+            <button id="rotation_minus">-rotation</button>
+            <button id="start_rotating">start rotating</button>
+            <button id="stop_rotating">stop rotating</button>
+            <button id="start_zoom">start zoom</button>
+            <button id="stop_zoom">stop zoom</button>
+        </div>
+    </div>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+    <script>
+        var map = new AMap.Map('map_container', {
+            resizeEnable: true,
+            zoom: 20,
+            center: [113, 23],
+            pitch: 50,
+            viewMode: '3D'
+        });
+
+        $('#patch_add').bind('click', function (e) {
+            map.setPitch((map.getPitch() + 1) >= 83 ? 83 : (map.getPitch() + 1));
+        });
+
+        $('#patch_minus').bind('click', function (e) {
+            map.setPitch((map.getPitch() - 1) <= 0 ? 0 : (map.getPitch() - 1));
+        });
+
+        $('#rotation_add').bind('click', function (e) {
+            map.setRotation((map.getRotation() + 1) >= 360 ? 360 : (map.getRotation() + 1));
+        });
+
+        $('#rotation_minus').bind('click', function (e) {
+            map.setRotation((map.getRotation() - 1) <= 0 ? 0 : (map.getRotation() - 1));
+        });
+
+        var rotating_flag = -1;
+
+        $('#start_rotating').bind('click', function (e) {
+            rotating_flag = setInterval(function () {
+                map.setRotation((map.getRotation() + 0.1) >= 360 ? 360 : (map.getRotation() + 0.1));
+            }, 10);
+        });
+
+        $('#stop_rotating').bind('click', function (e) {
+            clearInterval(rotating_flag);
+        });
+
+        var zoom_flag = -1;
+
+        $('#start_zoom').bind('click', function (e) {
+            zoom_flag = setInterval(function () {
+                map.setZoom((map.getZoom() + 0.1) >= 20 ? 20 : (map.getZoom() + 0.1));
+            }, 100);
+        });
+
+        $('#stop_zoom').bind('click', function (e) {
+            clearInterval(zoom_flag);
+        });
+    </script>
+</body>
+
+</html>
