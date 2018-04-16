@@ -2,11 +2,11 @@
 
 <head>
     <link rel="stylesheet" href="map.css">
-    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=9ab008b291ee69781485ab1adce836d8"></script>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.5&key=9ab008b291ee69781485ab1adce836d8&plugin=Map3D"></script>
 </head>
 
 <body>
-    <div id="map_container" style="width:100%; height:100%;"></div>
+    <div id="map_container"></div>
     <div id="map_control">
         <div>
             <button id="patch_add">+patch</button>
@@ -17,6 +17,7 @@
             <button id="stop_rotating">stop rotating</button>
             <button id="start_zoom">start zoom</button>
             <button id="stop_zoom">stop zoom</button>
+            <button id="prism">prirm</button>
         </div>
     </div>
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
@@ -26,7 +27,8 @@
             zoom: 20,
             center: [113, 23],
             pitch: 50,
-            viewMode: '3D'
+            viewMode: '3D',
+            mapStyle: "amap://styles/aaadd24c5d8483a20ded5cea742dcecc"
         });
 
         $('#patch_add').bind('click', function (e) {
@@ -67,6 +69,61 @@
 
         $('#stop_zoom').bind('click', function (e) {
             clearInterval(zoom_flag);
+        });
+
+        $('#prism').bind('click', function (e) {
+            var object3Dlayer = new AMap.Object3DLayer();
+            map.add(object3Dlayer);
+            var bounds = [
+                [ //大圈
+                    new AMap.LngLat(116, 39),
+                    new AMap.LngLat(117, 39),
+                    new AMap.LngLat(117, 40),
+                    new AMap.LngLat(116, 40)
+                ],
+                [ //洞1
+                    new AMap.LngLat(116.5, 39.25),
+                    new AMap.LngLat(116.75, 39.5),
+                    new AMap.LngLat(116.5, 39.75),
+                    new AMap.LngLat(116.25, 39.5)
+                ],
+                [ //洞2
+                    new AMap.LngLat(116.75, 39.75),
+                    new AMap.LngLat(116.9, 39.5),
+                    new AMap.LngLat(116.9, 39.75)
+                ],
+                [ //岛1
+                    new AMap.LngLat(117.5, 39.25),
+                    new AMap.LngLat(117.75, 39.5),
+                    new AMap.LngLat(117.5, 39.75),
+                    new AMap.LngLat(117.25, 39.5)
+                ],
+                [ //岛2
+                    new AMap.LngLat(118.5, 39.25),
+                    new AMap.LngLat(118.75, 39.5),
+                    new AMap.LngLat(118.5, 39.75),
+                    new AMap.LngLat(118.25, 39.5)
+                ]
+            ]
+            // var lnglatToG20 =  function(lnglats) {
+            //     for (var i = 0; i < lnglats.length; i += 1) {
+            //         var g20 = map.lngLatToGeodeticCoord(lnglats[i]);
+            //         lnglats[i] = g20
+            //     }
+            //     return lnglats;
+            // }
+            // for (var i = 0; i < bounds.length; i += 1) {
+            //     bounds[i] = lnglatToG20(bounds[i]);
+            // }
+            var height = 300000;
+            var color = [0, 0, 1, 0.9];
+            var prism = new AMap.Object3D.Prism({
+                path: bounds,
+                height: height,
+                color: color
+            });
+            prism.transparent = true;
+            object3Dlayer.add(prism);
         });
     </script>
 </body>
