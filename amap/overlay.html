@@ -1,0 +1,32 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="map.css">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=9ab008b291ee69781485ab1adce836d8"></script>
+    <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+</head>
+
+<body>
+    <div id="map_container"></div>
+    <div id="map_control">
+        <button id="add_marker">add_marker</button>
+    </div>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+    <script src="map.base.js"></script>
+    <script src="overlay.js"></script>
+    <script src="demo.js"></script>
+    <script src="lines/907.js"></script>
+    <script>
+        Map.init('map_container', function (map) {
+            $('#add_marker').bind('click', function () {
+                add_on_marker(map, [116.405467 + Math.random(), 39.907761 + Math.random()]);
+                add_off_marker(map, [116.405467 + Math.random(), 39.907761 + Math.random()]);
+            });
+
+            line_move(map, data);
+        });
+    </script>
+</body>
+
+</html>
