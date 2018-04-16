@@ -1,0 +1,56 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=9ab008b291ee69781485ab1adce836d8"></script>
+</head>
+
+<body>
+    <div id="map_container" style="width:100%; height:100%;"></div>
+    <script src="./019.data.js"></script>
+    <script>
+        var map = new AMap.Map('map_container', {
+            resizeEnable: true,
+            zoom: 10,
+            center: [113, 23],
+            mapStyle: 'amap://styles/aaadd24c5d8483a20ded5cea742dcecc'
+        });
+
+        // data.forEach(line => {
+        //     if (line.routes1) {
+        //         var polyline = new AMap.Polyline({
+        //             path: line.routes1.map(ele => {
+        //                 return [ele.lon, ele.lat]
+        //             }),
+        //             strokeColor: "#3366FF",
+        //             strokeOpacity: 1,
+        //             strokeWeight: 3,
+        //             strokeStyle: "solid",
+        //             strokeDasharray: [10, 5]
+        //         });
+        //         polyline.setMap(map);
+        //     }
+        //     if (line.routes2) {
+        //         var polyline = new AMap.Polyline({
+        //             path: line.routes2.map(ele => {
+        //                 return [ele.lon, ele.lat]
+        //             }),
+        //             strokeColor: "#ff5500",
+        //             strokeOpacity: 1,
+        //             strokeWeight: 3,
+        //             strokeStyle: "solid",
+        //             strokeDasharray: [10, 5]
+        //         });
+        //         polyline.setMap(map);
+        //     }
+        // });
+    </script>
+</body>
+
+</html>
