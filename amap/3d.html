@@ -24,8 +24,8 @@
     <script>
         var map = new AMap.Map('map_container', {
             resizeEnable: true,
-            zoom: 20,
-            center: [113, 23],
+            zoom: 14,
+            center: [116, 39],
             pitch: 50,
             viewMode: '3D',
             mapStyle: "amap://styles/aaadd24c5d8483a20ded5cea742dcecc"
@@ -75,48 +75,21 @@
             var object3Dlayer = new AMap.Object3DLayer();
             map.add(object3Dlayer);
             var bounds = [
-                [ //大圈
+                [
                     new AMap.LngLat(116, 39),
-                    new AMap.LngLat(117, 39),
-                    new AMap.LngLat(117, 40),
-                    new AMap.LngLat(116, 40)
+                    new AMap.LngLat(116.01, 39),
+                    new AMap.LngLat(116.01, 39.01),
+                    new AMap.LngLat(116, 39.01)
                 ],
-                [ //洞1
-                    new AMap.LngLat(116.5, 39.25),
-                    new AMap.LngLat(116.75, 39.5),
-                    new AMap.LngLat(116.5, 39.75),
-                    new AMap.LngLat(116.25, 39.5)
-                ],
-                [ //洞2
-                    new AMap.LngLat(116.75, 39.75),
-                    new AMap.LngLat(116.9, 39.5),
-                    new AMap.LngLat(116.9, 39.75)
-                ],
-                [ //岛1
-                    new AMap.LngLat(117.5, 39.25),
-                    new AMap.LngLat(117.75, 39.5),
-                    new AMap.LngLat(117.5, 39.75),
-                    new AMap.LngLat(117.25, 39.5)
-                ],
-                [ //岛2
-                    new AMap.LngLat(118.5, 39.25),
-                    new AMap.LngLat(118.75, 39.5),
-                    new AMap.LngLat(118.5, 39.75),
-                    new AMap.LngLat(118.25, 39.5)
+                [
+                    new AMap.LngLat(116.1, 39),
+                    new AMap.LngLat(116.11, 39),
+                    new AMap.LngLat(116.11, 39.01),
+                    new AMap.LngLat(116.1, 39.01)
                 ]
             ]
-            // var lnglatToG20 =  function(lnglats) {
-            //     for (var i = 0; i < lnglats.length; i += 1) {
-            //         var g20 = map.lngLatToGeodeticCoord(lnglats[i]);
-            //         lnglats[i] = g20
-            //     }
-            //     return lnglats;
-            // }
-            // for (var i = 0; i < bounds.length; i += 1) {
-            //     bounds[i] = lnglatToG20(bounds[i]);
-            // }
-            var height = 300000;
-            var color = [0, 0, 1, 0.9];
+            var height = 10000;
+            var color = [0, 1, 0, 0.5];
             var prism = new AMap.Object3D.Prism({
                 path: bounds,
                 height: height,
