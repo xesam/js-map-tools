@@ -16,15 +16,16 @@
     <script src="map.base.js"></script>
     <script src="overlay.js"></script>
     <script src="demo.js"></script>
-    <script src="lines/907.js"></script>
+    <script src="lines/130.js"></script>
     <script>
         Map.init('map_container', function (map) {
-            $('#add_marker').bind('click', function () {
-                add_on_marker(map, [116.405467 + Math.random(), 39.907761 + Math.random()]);
-                add_off_marker(map, [116.405467 + Math.random(), 39.907761 + Math.random()]);
-            });
+            // $('#add_marker').bind('click', function () {
+            //     add_on_marker(map, [116.405467 + Math.random(), 39.907761 + Math.random()]);
+            //     add_off_marker(map, [116.405467 + Math.random(), 39.907761 + Math.random()]);
+            // });
 
-            line_move(map, data);
+            // line_move(map, data);
+            add_line(map, data, 0);
         });
     </script>
 </body>

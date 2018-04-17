@@ -3,7 +3,7 @@ var Map = {
     var map = new AMap.Map(container, {
       resizeEnable: true,
       zoom: 13,
-      center: [116.405467, 39.907761],
+      center: [113.159649, 22.995836],
       mapStyle: "amap://styles/aaadd24c5d8483a20ded5cea742dcecc"
     });
     cbk && cbk(map);
