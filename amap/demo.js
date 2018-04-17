@@ -101,31 +101,54 @@ function line_move(map, line, start_stop_index, end_stop_index) {
   });
 }
 
-function add_line(map, line, direction) {
+function show_route(map, line, direction, color) {
   var routes = line["routes" + (direction + 1)];
   var lineArr = routes.map(pos => {
     return [pos.lon, pos.lat];
   });
   var polyline = new AMap.Polyline({
     path: lineArr, //设置线覆盖物路径
-    strokeColor: "#3366FF", //线颜色
+    strokeColor: color ? color : "#3366FF", //线颜色
     strokeOpacity: 1, //线透明度
     strokeWeight: 4, //线宽
     strokeStyle: "solid", //线样式
-    strokeDasharray: [10, 5] //补充线样式
+    strokeDasharray: [10, 5] //补充线样
   });
   polyline.setMap(map);
+}
 
+function show_stops_marker(map, line, direction, filter) {
+  filter =
+    filter ||
+    function() {
+      return true;
+    };
   var stops = line["stations" + (direction + 1)];
-  stops.forEach(stop => {
-    add_stop_marker(map, [stop.lon, stop.lat]);
-    add_stop_text(map, stop.name, [stop.lon, stop.lat]);
+  stops.forEach((stop, index) => {
+    if (filter(stop, index)) {
+      add_stop_marker(map, stop);
+    }
   });
 }
 
-function add_stop_marker(map, center) {
+function show_stops_text(map, line, direction, filter) {
+  filter =
+    filter ||
+    function() {
+      return true;
+    };
+  var stops = line["stations" + (direction + 1)];
+  stops.forEach((stop, index) => {
+    if (filter(stop, index)) {
+      var order = index + 1;
+      add_stop_text(map, line, direction, stop, order);
+    }
+  });
+}
+
+function add_stop_marker(map, stop) {
   var circleMarker = new AMap.CircleMarker({
-    center: center,
+    center: [stop.lon, stop.lat],
     radius: 5,
     strokeColor: "white",
     strokeWeight: 2,
@@ -134,26 +157,32 @@ function add_stop_marker(map, center) {
     fillOpacity: 1,
     zIndex: 100,
     bubble: true,
-    cursor: "pointer",
-    clickable: true
+    cursor: "pointer"
   });
   circleMarker.setMap(map);
 }
-function add_stop_text(map, stop_name, position) {
+
+function add_stop_text(map, line, direction, stop, order, color) {
   var text = new AMap.Text({
-    text: stop_name,
-    textAlign: "center", // 'left' 'right', 'center',
-    verticalAlign: "top", //middle 、bottom
-    draggable: true,
-    cursor: "pointer",
+    text: `${line.name}.${order}.${stop.name}`,
+    textAlign: "center",
+    verticalAlign: "top",
+    draggable: false,
     angle: 0,
     offset: new AMap.Pixel(0, 10),
     style: {
       background: "none",
       border: "none",
-      "font-size": "12px"
+      "box-shadow": "3px 3px 3px #888888",
+      "font-size": "12px",
+      color: color ? color : "#000"
     },
-    position: position
+    position: [stop.lon, stop.lat]
   });
   text.setMap(map);
+}
+
+function get_stop(line, direction, order, stop_name) {
+  var stops = line["stations" + (direction + 1)];
+  return stops[order - 1];
 }

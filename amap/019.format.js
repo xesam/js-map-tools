@@ -5,7 +5,7 @@ lineReader.eachLine("./019_2018-04-15.csv", "utf-8", function(line, last) {
   line = JSON.parse(line);
   fs.writeFile(
     `./lines/${line.name}.js`,
-    `let data=${JSON.stringify(line)}`,
+    `let data_${line.name}=${JSON.stringify(line)}`,
     "utf-8",
     function(err) {
       if (err) {
