@@ -110,9 +110,10 @@ function show_route(map, line, direction, color) {
     path: lineArr, //设置线覆盖物路径
     strokeColor: color ? color : "#3366FF", //线颜色
     strokeOpacity: 1, //线透明度
-    strokeWeight: 4, //线宽
+    strokeWeight: 6, //线宽
     strokeStyle: "solid", //线样式
-    strokeDasharray: [10, 5] //补充线样
+    strokeDasharray: [10, 5], //补充线样,
+    showDir:true
   });
   polyline.setMap(map);
 }
@@ -153,8 +154,8 @@ function add_stop_marker(map, stop) {
     strokeColor: "white",
     strokeWeight: 2,
     strokeOpacity: 1,
-    fillColor: "rgba(255,0,0,1)",
-    fillOpacity: 1,
+    fillColor: "rgba(0,255,0,1)",
+    fillOpacity: 0.8,
     zIndex: 100,
     bubble: true,
     cursor: "pointer"
@@ -164,7 +165,7 @@ function add_stop_marker(map, stop) {
 
 function add_stop_text(map, line, direction, stop, order, color) {
   var text = new AMap.Text({
-    text: `${line.name}.${order}.${stop.name}`,
+    text: `【${line.name}】${order}.${stop.name}`,
     textAlign: "center",
     verticalAlign: "top",
     draggable: false,

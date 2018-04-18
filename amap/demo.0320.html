@@ -21,13 +21,13 @@
         Map.init('map_container', function (map) {
             map.setFeatures("road");
 
-            show_route(map, data_915, 0);
+            show_route(map, data_915, 0, '#FF0000');
             show_stops_marker(map, data_915, 0);
             show_stops_text(map, data_915, 0, function (stop, index) {
                 return index + 1 == 19;
             });
 
-            show_route(map, data_309, 1, '#005500');
+            show_route(map, data_309, 1, '#FF9900');
             show_stops_marker(map, data_309, 1);
             show_stops_text(map, data_309, 1, function (stop, index) {
                 return index + 1 == 10;
