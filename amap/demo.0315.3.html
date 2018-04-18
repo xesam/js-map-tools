@@ -1,0 +1,74 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="map.css">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=9ab008b291ee69781485ab1adce836d8"></script>
+    <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+</head>
+
+<body>
+    <div id="map_container"></div>
+    <div id="map_control">
+        <button id="start_anim">start anim</button>
+    </div>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+    <script src="map.base.js"></script>
+    <script src="overlay.js"></script>
+    <script src="demo.js"></script>
+    <script src="demo.color.js"></script>
+    <script src="../data/lines/309.js"></script>
+    <script src="../data/lines/351.js"></script>
+    <script src="../data/lines/915.js"></script>
+    <script>
+        Map.init('map_container', function (map) {
+            map.setFeatures("road");
+
+            show_route(map, data_915, 0, demo_color.c915.line);
+            show_stops(map, data_915, 0, function (line, direction, stop, order) {
+                add_stop_marker(map, stop);
+            });
+
+            $('#start_anim').bind('click', function () {
+                AMapUI.load(["ui/misc/PathSimplifier"], function (PathSimplifier) {
+                    var p1 = line_move(map, PathSimplifier, data_915, 0, 0, 18);
+                    p1.nav.on('move', function (e) {
+                        // map.setCenter(p1.nav.getPosition());
+                    });
+                    p1.nav.on('pause', function (e) {
+
+                        show_stops(map, data_915, 0, function (line, direction, stop,
+                            order) {
+                            if (order == 19) {
+                                add_stop_text(map, line, direction, stop, order,
+                                    demo_color.c915.text);
+
+                                var text = new AMap.Text({
+                                    text: '10:47:19 -- 10:47:36',
+                                    textAlign: "center",
+                                    verticalAlign: "top",
+                                    draggable: false,
+                                    angle: 0,
+                                    offset: new AMap.Pixel(0, 40),
+                                    style: {
+                                        background: demo_color.c915.text,
+                                        border: "none",
+                                        "box-shadow": "2px 2px 2px #666666",
+                                        "font-size": "12px",
+                                        color: "#000"
+                                    },
+                                    position: [stop.lon, stop.lat]
+                                });
+                                text.setMap(map);
+                            }
+                        });
+                    });
+                    p1.nav.start();
+                });
+
+            });
+        });
+    </script>
+</body>
+
+</html>
