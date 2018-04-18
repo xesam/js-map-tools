@@ -22,15 +22,19 @@
             map.setFeatures("road");
 
             show_route(map, data_341, 1, '#FF0000');
-            show_stops_marker(map, data_341, 1);
-            show_stops_text(map, data_341, 1, function (stop, index) {
-                return index + 1 == 18;
+            show_stops(map, data_341, 1, function (line, direction, stop, order) {
+                add_stop_marker(map, stop);
+                if (order == 18) {
+                    add_stop_text(map, line, direction, stop, order);
+                }
             });
 
             show_route(map, data_915, 1, '#0000ff');
-            show_stops_marker(map, data_915, 1);
-            show_stops_text(map, data_915, 1, function (stop, index) {
-                return index + 1 == 14;
+            show_stops(map, data_915, 1, function (line, direction, stop, order) {
+                add_stop_marker(map, stop);
+                if (order == 14) {
+                    add_stop_text(map, line, direction, stop, order);
+                }
             });
         });
     </script>

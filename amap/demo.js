@@ -113,9 +113,16 @@ function show_route(map, line, direction, color) {
     strokeWeight: 6, //线宽
     strokeStyle: "solid", //线样式
     strokeDasharray: [10, 5], //补充线样,
-    showDir:true
+    showDir: true
   });
   polyline.setMap(map);
+}
+
+function show_stops(map, line, direction, process) {
+  var stops = line["stations" + (direction + 1)];
+  stops.forEach((stop, index) => {
+    process(line, direction, stop, index + 1);
+  });
 }
 
 function show_stops_marker(map, line, direction, filter) {
@@ -174,7 +181,7 @@ function add_stop_text(map, line, direction, stop, order, color) {
     style: {
       background: "none",
       border: "none",
-      "box-shadow": "3px 3px 3px #888888",
+      "box-shadow": "3px 3px 3px #666666",
       "font-size": "12px",
       color: color ? color : "#000"
     },
@@ -186,4 +193,17 @@ function add_stop_text(map, line, direction, stop, order, color) {
 function get_stop(line, direction, order, stop_name) {
   var stops = line["stations" + (direction + 1)];
   return stops[order - 1];
+}
+
+function add_circle(map, stop) {
+  var circle = new AMap.Circle({
+    center: new AMap.LngLat(stop.lon, stop.lat), // 圆心位置
+    radius: 300, //半径
+    strokeColor: "#F33", //线颜色
+    strokeOpacity: 0.8, //线透明度
+    strokeWeight: 1, //线粗细度
+    fillColor: "#ee2200", //填充颜色
+    fillOpacity: 0.35 //填充透明度
+  });
+  circle.setMap(map);
 }
