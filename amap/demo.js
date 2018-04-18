@@ -49,56 +49,78 @@ function add_off_marker(map, center) {
   circleMarker.setMap(map);
 }
 
-function line_move(map, line, start_stop_index, end_stop_index) {
-  AMapUI.load(["ui/misc/PathSimplifier"], function(PathSimplifier) {
-    if (!PathSimplifier.supportCanvas) {
-      console.warn("当前环境不支持 Canvas！");
-      return;
+function find_stop_in_route(line, direction, stop_index) {
+  var routes = line["routes" + (direction + 1)];
+  var stops = line["stations" + (direction + 1)];
+  var stop = stops[stop_index];
+  var target_index = 0;
+  var target_point = routes[target_index];
+  routes.slice(1).forEach((point, index) => {
+    var dis_1 =
+      Math.pow(target_point.lon - stop.lon, 2) +
+      Math.pow(target_point.lat - stop.lat, 2);
+    var dis_2 =
+      Math.pow(point.lon - stop.lon, 2) + Math.pow(point.lat - stop.lat, 2);
+    if (dis_1 > dis_2) {
+      target_index = index;
+      target_point = point;
     }
-
-    line.stations1.forEach(stop => {
-      add_stop_marker(map, [stop.lon, stop.lat]);
-    });
-
-    var pathSimplifierIns = new PathSimplifier({
-      zIndex: 100,
-      map: map,
-      getPath: function(pathData, pathIndex) {
-        return pathData.path;
-      },
-      getHoverTitle: function(pathData, pathIndex, pointIndex) {
-        if (pointIndex >= 0) {
-          return (
-            pathData.name + "，点:" + pointIndex + "/" + pathData.path.length
-          );
-        }
-        return pathData.name + "，点数量" + pathData.path.length;
-      },
-      renderOptions: {
-        pathLineStyle: {
-          strokeStyle: "red",
-          lineWidth: 6,
-          dirArrowStyle: true
-        }
-      }
-    });
-
-    pathSimplifierIns.setData([
-      {
-        name: "轨迹0",
-        path: line.routes1.map(pos => {
-          return [pos.lon, pos.lat];
-        })
-      }
-    ]);
-
-    var navg0 = pathSimplifierIns.createPathNavigator(0, {
-      loop: false,
-      speed: 3000
-    });
-
-    navg0.start();
   });
+  return target_index;
+}
+
+function line_move(
+  map,
+  PathSimplifier,
+  line,
+  direction,
+  start_stop_index,
+  end_stop_index
+) {
+  var pathSimplifierIns = new PathSimplifier({
+    zIndex: 9999,
+    map: map,
+    getPath: function(pathData, pathIndex) {
+      return pathData.path;
+    },
+    autoSetFitView: false,
+    renderOptions: {
+      pathLineStyle: {
+        lineWidth: 0,
+        dirArrowStyle: false,
+        borderWidth: 0
+      }
+    },
+    pathNavigatorStyle: {
+      pathLinePassedStyle: {
+        strokeStyle: "red"
+      }
+    }
+  });
+
+  var routes = line["routes" + (direction + 1)];
+  var start_index = find_stop_in_route(line, direction, start_stop_index);
+  var end_index = find_stop_in_route(line, direction, end_stop_index);
+
+  pathSimplifierIns.setData([
+    {
+      name: "轨迹0",
+      path: routes.map(pos => {
+        return [pos.lon, pos.lat];
+      })
+    }
+  ]);
+
+  var navg0 = pathSimplifierIns.createPathNavigator(0, {
+    loop: false,
+    speed: 1000,
+    zIndex: 9999,
+    range: [start_index, end_index]
+  });
+  return {
+    simplifier: pathSimplifierIns,
+    nav: navg0
+  };
 }
 
 function show_route(map, line, direction, color) {
@@ -162,7 +184,7 @@ function add_stop_marker(map, stop) {
     strokeWeight: 2,
     strokeOpacity: 1,
     fillColor: "rgba(0,255,0,1)",
-    fillOpacity: 0.8,
+    fillOpacity: 1,
     zIndex: 100,
     bubble: true,
     cursor: "pointer"
@@ -179,11 +201,11 @@ function add_stop_text(map, line, direction, stop, order, color) {
     angle: 0,
     offset: new AMap.Pixel(0, 10),
     style: {
-      background: "none",
+      background: color ? color : "none",
       border: "none",
-      "box-shadow": "3px 3px 3px #666666",
+      "box-shadow": "2px 2px 2px #666666",
       "font-size": "12px",
-      color: color ? color : "#000"
+      color: "#000"
     },
     position: [stop.lon, stop.lat]
   });

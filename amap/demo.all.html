@@ -1,0 +1,182 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="map.css">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=9ab008b291ee69781485ab1adce836d8"></script>
+    <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+</head>
+
+<body>
+    <div id="map_container"></div>
+    <div id="map_control">
+        <button id="show_15">show_15</button>
+        <button id="show_18">show_18</button>
+        <button id="show_19">show_19</button>
+        <button id="show_20">show_20</button>
+        <button id="show_21">show_21</button>
+    </div>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+    <script src="map.base.js"></script>
+    <script src="overlay.js"></script>
+    <script src="demo.js"></script>
+    <script src="demo.color.js"></script>
+    <script src="../data/lines/309.js"></script>
+    <script src="../data/lines/351.js"></script>
+    <script src="../data/lines/915.js"></script>
+    <script src="../data/lines/341.js"></script>
+    <script>
+        Map.init('map_container', function (map) {
+            map.setFeatures("road");
+
+            $('#show_15').bind('click', function () {
+                show_route(map, data_915, 0, demo_color.c915.line);
+                show_stops(map, data_915, 0, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 19) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
+                    }
+                    if (order == 30) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
+                    }
+                });
+
+                show_route(map, data_309, 1, demo_color.c309_1.line);
+                show_stops(map, data_309, 1, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 11) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                        add_circle(map, stop);
+                    }
+                    if (order == 14) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                    }
+                });
+
+                show_route(map, data_351, 1, demo_color.c351.line);
+                show_stops(map, data_351, 1, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 20) {
+                        add_stop_text(map, line, direction, stop, order, '#00CCCC99');
+                    }
+                    if (order == 25) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c351.text);
+                    }
+                });
+            });
+
+
+            $('#show_18').bind('click', function () {
+                show_route(map, data_341, 1, demo_color.c341.line);
+                show_stops(map, data_341, 1, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 18) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c341.text);
+                    }
+                    if (order == 22) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c341.text);
+                    }
+                });
+
+                show_route(map, data_915, 1, demo_color.c915.line);
+                show_stops(map, data_915, 1, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 14) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
+                    }
+                    if (order == 24) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
+                    }
+                });
+            });
+            $('#show_19').bind('click', function () {
+                //19
+                show_stops(map, data_915, 0, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 19) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
+                    }
+                    if (order == 27) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
+                    }
+                });
+
+                show_stops(map, data_309, 1, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 8) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                    }
+                    if (order == 14) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                    }
+                    if (order == 8) {
+                        add_circle(map, stop);
+                    }
+                });
+            });
+            $('#show_20').bind('click', function () {
+                //20
+                show_stops(map, data_915, 0, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 19) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
+                    }
+                    if (order == 29) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
+                    }
+                });
+
+                show_stops(map, data_309, 1, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 10) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                    }
+                    if (order == 14) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                    }
+                    if (order == 10) {
+                        add_circle(map, stop);
+                    }
+                });
+            });
+            $('#show_21').bind('click', function () {
+                //21
+                show_route(map, data_351, 0, demo_color.c351.line);
+                show_stops(map, data_351, 0, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 14) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c351.text);
+                    }
+                    if (order == 18) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c351.text);
+                    }
+                });
+
+                show_stops(map, data_309, 1, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 11) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                    }
+                    if (order == 14) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                    }
+                    if (order == 11) {
+                        add_circle(map, stop);
+                    }
+                });
+
+                show_stops(map, data_309, 0, function (line, direction, stop, order) {
+                    add_stop_marker(map, stop);
+                    if (order == 20) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c309_0.text);
+                    }
+                    if (order == 23) {
+                        add_stop_text(map, line, direction, stop, order, demo_color.c309_0.text);
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

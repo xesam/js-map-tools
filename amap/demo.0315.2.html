@@ -1,0 +1,93 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="map.css">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=9ab008b291ee69781485ab1adce836d8"></script>
+    <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+</head>
+
+<body>
+    <div id="map_container"></div>
+    <div id="map_control">
+        <button id="start_anim">start anim</button>
+    </div>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+    <script src="map.base.js"></script>
+    <script src="overlay.js"></script>
+    <script src="demo.js"></script>
+    <script src="demo.color.js"></script>
+    <script src="../data/lines/309.js"></script>
+    <script src="../data/lines/351.js"></script>
+    <script src="../data/lines/915.js"></script>
+    <script>
+        Map.init('map_container', function (map) {
+            map.setFeatures("road");
+
+            show_route(map, data_915, 0, demo_color.c915.line);
+            show_stops(map, data_915, 0, function (line, direction, stop, order) {
+                add_stop_marker(map, stop);
+                if (order == 19) {
+                    add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
+                }
+                if (order == 30) {
+                    add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
+                }
+            });
+
+            show_route(map, data_309, 1, demo_color.c309_1.line);
+            show_stops(map, data_309, 1, function (line, direction, stop, order) {
+                add_stop_marker(map, stop);
+                if (order == 11) {
+                    add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                    add_circle(map, stop);
+                }
+                if (order == 14) {
+                    add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                }
+            });
+
+            show_route(map, data_351, 1, demo_color.c351.line);
+            show_stops(map, data_351, 1, function (line, direction, stop, order) {
+                add_stop_marker(map, stop);
+                if (order == 20) {
+                    add_stop_text(map, line, direction, stop, order, '#00CCCC99');
+                }
+                if (order == 25) {
+                    add_stop_text(map, line, direction, stop, order, demo_color.c351.text);
+                }
+            });
+
+            $('#start_anim').bind('click', function () {
+                AMapUI.load(["ui/misc/PathSimplifier"], function (PathSimplifier) {
+                    var p1 = line_move(map, PathSimplifier, data_915, 0, 18, 29);
+                    p1.nav.on('move', function (e) {
+                        map.setCenter(p1.nav.getPosition());
+                    });
+                    p1.nav.on('pause', function (e) {
+                        var p2 = line_move(map, PathSimplifier, data_309, 1, 10, 13);
+                        p2.nav.on('move', function (e) {
+                            map.setCenter(p2.nav.getPosition());
+                        });
+                        p2.nav.on('pause', function (e) {
+                            var p3 = line_move(map, PathSimplifier, data_351, 1,
+                                19, 24);
+                            p3.nav.on('move', function (e) {
+                                map.setCenter(p3.nav.getPosition());
+                            });
+                            p3.nav.on('pause', function (e) {
+                                console.log('pause');
+                            });
+                            p3.nav.start();
+                        });
+                        p2.nav.start();
+                    });
+                    p1.nav.start();
+                });
+
+            });
+        });
+    </script>
+</body>
+
+</html>

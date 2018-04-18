@@ -15,25 +15,29 @@
     <script src="map.base.js"></script>
     <script src="overlay.js"></script>
     <script src="demo.js"></script>
-    <script src="../data/lines/341.js"></script>
+    <script src="demo.color.js"></script>
+    <script src="../data/lines/309.js"></script>
     <script src="../data/lines/915.js"></script>
     <script>
         Map.init('map_container', function (map) {
             map.setFeatures("road");
 
-            show_route(map, data_341, 1, '#FF0000');
-            show_stops(map, data_341, 1, function (line, direction, stop, order) {
+            show_route(map, data_915, 0, demo_color.c915.line);
+            show_stops(map, data_915, 0, function (line, direction, stop, order) {
                 add_stop_marker(map, stop);
-                if (order == 18) {
-                    add_stop_text(map, line, direction, stop, order);
+                if (order == 19) {
+                    add_stop_text(map, line, direction, stop, order, demo_color.c915.text);
                 }
             });
 
-            show_route(map, data_915, 1, '#0000ff');
-            show_stops(map, data_915, 1, function (line, direction, stop, order) {
+            show_route(map, data_309, 1, demo_color.c309_1.text);
+            show_stops(map, data_309, 1, function (line, direction, stop, order) {
                 add_stop_marker(map, stop);
-                if (order == 14) {
-                    add_stop_text(map, line, direction, stop, order);
+                if (order == 10) {
+                    add_stop_text(map, line, direction, stop, order, demo_color.c309_1.text);
+                }
+                if (order == 10) {
+                    add_circle(map, stop);
                 }
             });
         });
