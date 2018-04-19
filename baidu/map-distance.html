@@ -119,9 +119,9 @@
                         return [];
                     }
                     if(this.lat_step){
-                        return stepLngMapper(this.map, this.lng, [this.lat_step]);
+                        return stepLatMapper(this.map, this.lng, [this.lat_step]);
                     }else{
-                        return stepLngMapper(this.map, this.lng);
+                        return stepLatMapper(this.map, this.lng);
                     }
                 }
             }
