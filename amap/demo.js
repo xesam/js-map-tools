@@ -229,3 +229,39 @@ function add_circle(map, stop) {
   });
   circle.setMap(map);
 }
+
+function visual_route(line, direction) {
+  var routes = line["routes" + (direction + 1)];
+
+  let ret = [];
+  let start = routes[0];
+  routes.forEach(item => {
+    ret.push({
+      line: [`${start.lon},${start.lat}`, `${item.lon},${item.lat}`]
+    });
+    start = item;
+  });
+  return ret;
+}
+
+function visual_stop(line, direction, o_start, o_end, d_start, d_end) {
+  var stops = line["stations" + (direction + 1)];
+
+  let ret = [];
+
+  for (let i = 0; i < 50; i++) {
+    let start = o_start + parseInt((o_end - o_start) * Math.random());
+    let end = d_start + parseInt((d_end - d_start) * Math.random());
+
+    let start_stop = stops[start];
+    let end_stop = stops[end];
+
+    ret.push({
+      line: [
+        `${start_stop.lon},${start_stop.lat}`,
+        `${end_stop.lon},${end_stop.lat}`
+      ]
+    });
+  }
+  return ret;
+}

@@ -1,0 +1,101 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="map.css">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=9ab008b291ee69781485ab1adce836d8"></script>
+    <script src="http://webapi.amap.com/loca?key=9ab008b291ee69781485ab1adce836d8"></script>
+    <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+</head>
+
+<body>
+    <div id="map_container"></div>
+    <div id="map_control">
+    </div>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+    <script src="overlay.js"></script>
+    <script src="demo.js"></script>
+    <script src="demo.color.js"></script>
+    <script src="../data/lines/309.js"></script>
+    <script src="../data/lines/351.js"></script>
+    <script src="../data/lines/915.js"></script>
+    <script>
+        var map = Loca.create('map_container', {
+            mapStyle: 'amap://styles/grey',
+            features: ['bg', 'road'],
+            zoom: 13,
+            center: [113.220007, 22.879622]
+        });
+
+        var layer = Loca.visualLayer({
+            container: map,
+            blendMode: 'lighter',
+            type: 'line',
+            shape: 'line'
+        });
+
+        let data = visual_route(data_915, 0);
+
+        layer.setData(data, {
+            lnglat: 'line'
+        });
+
+        layer.setOptions({
+            style: {
+                opacity: 0.8,
+                lineWidth: 2,
+                stroke: '#FFFF00'
+            }
+        });
+        layer.render();
+
+        var layer_2 = Loca.visualLayer({
+            container: map,
+            blendMode: 'lighter',
+            type: 'line',
+            shape: 'line'
+        });
+
+        let data_2 = visual_stop(data_915, 0, 1, 5, 20, 25);
+
+        layer_2.setData(data_2, {
+            lnglat: 'line'
+        });
+
+        layer_2.setOptions({
+            style: {
+                opacity: 0.8,
+                lineWidth: 2,
+                stroke: 'rgba(49, 80, 189, 0.2)',
+                curveness: 0.5,
+            }
+        });
+        layer_2.render();
+
+
+        var layer_3 = Loca.visualLayer({
+            container: map,
+            blendMode: 'lighter',
+            type: 'line',
+            shape: 'line'
+        });
+
+        let data_3 = visual_stop(data_915, 0, 1, 5, 35, 43);
+
+        layer_3.setData(data_3, {
+            lnglat: 'line'
+        });
+
+        layer_3.setOptions({
+            style: {
+                opacity: 0.8,
+                lineWidth: 2,
+                stroke: 'rgba(49, 80, 189, 0.2)',
+                curveness: 0.5,
+            }
+        });
+        layer_3.render();
+    </script>
+</body>
+
+</html>
