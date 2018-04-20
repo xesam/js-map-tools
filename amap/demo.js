@@ -113,7 +113,7 @@ function line_move(
 
   var navg0 = pathSimplifierIns.createPathNavigator(0, {
     loop: false,
-    speed: 1000,
+    speed: 5000,
     zIndex: 9999,
     range: [start_index, end_index]
   });

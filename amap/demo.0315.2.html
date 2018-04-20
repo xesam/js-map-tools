@@ -61,20 +61,20 @@
             $('#start_anim').bind('click', function () {
                 AMapUI.load(["ui/misc/PathSimplifier"], function (PathSimplifier) {
                     var p1 = line_move(map, PathSimplifier, data_915, 0, 18, 29);
-                    p1.nav.on('move', function (e) {
-                        map.setCenter(p1.nav.getPosition());
-                    });
+                    // p1.nav.on('move', function (e) {
+                    //     map.setCenter(p1.nav.getPosition());
+                    // });
                     p1.nav.on('pause', function (e) {
                         var p2 = line_move(map, PathSimplifier, data_309, 1, 10, 13);
-                        p2.nav.on('move', function (e) {
-                            map.setCenter(p2.nav.getPosition());
-                        });
+                        // p2.nav.on('move', function (e) {
+                        //     map.setCenter(p2.nav.getPosition());
+                        // });
                         p2.nav.on('pause', function (e) {
                             var p3 = line_move(map, PathSimplifier, data_351, 1,
                                 19, 24);
-                            p3.nav.on('move', function (e) {
-                                map.setCenter(p3.nav.getPosition());
-                            });
+                            // p3.nav.on('move', function (e) {
+                            //     map.setCenter(p3.nav.getPosition());
+                            // });
                             p3.nav.on('pause', function (e) {
                                 console.log('pause');
                             });
