@@ -1,4 +1,5 @@
 from datetime import datetime
+import sys
 
 #处理用户的IC卡刷卡数据
 
@@ -17,9 +18,8 @@ def str_datetime(datetime_obj):
         return datetime.strftime(datetime_obj, '%Y-%m-%d %H:%M:%S')
 
 
-users = {}
-
-with open('./019.csv', encoding="gbk") as in_file:
+def get_users(in_file):
+    users = {}
     in_file.readline()
     for line in in_file:
         fields = line.strip().split(',')
@@ -46,31 +46,42 @@ with open('./019.csv', encoding="gbk") as in_file:
         if user_id not in users:
             users[user_id] = []
         users[user_id].append(record)
+    return users
 
 
-def inspect_user(user_id):
+def inspect_user(users, user_id):
     records = users[user_id]
     records = sorted(records, key=lambda r: r[5])
     for record in records:
         print(record)
 
 
-# inspect_user("5100001197277948");
+def export_user(user_records, out_file):
+    records = sorted(user_records, key=lambda r: r[5])
+    for record in records:
+        d = [
+            record[0], record[1], record[2], record[3], record[4],
+            str_datetime(record[5]),
+            str(record[6]), record[7],
+            str_datetime(record[8]),
+            str(record[9]), record[10],
+            str_datetime(record[11])
+        ]
+        out_file.write(','.join(d))
+        out_file.write('\n')
 
-for user_id in users.keys():
-    records = users[user_id]
-    records = sorted(records, key=lambda r: r[5])
-    with open(
-            './{0}.csv'.format(user_id), mode="w",
-            encoding="utf-8") as out_file:
-        for record in records:
-            d = [
-                record[0], record[1], record[2], record[3], record[4],
-                str_datetime(record[5]),
-                str(record[6]), record[7],
-                str_datetime(record[8]),
-                str(record[9]), record[10],
-                str_datetime(record[11])
-            ]
-            out_file.write(','.join(d))
-            out_file.write('\n')
+
+def export_users(users):
+    for user_id in users.keys():
+        records = users[user_id]
+        with open(
+                '../data/{0}.csv'.format(user_id), mode="w",
+                encoding="utf-8") as out_file:
+            export_user(records, out_file)
+
+
+if __name__ == '__main__':
+    in_file_path = sys.argv[1]
+    with open(in_file_path, encoding="utf-8") as in_file:
+        users_0 = get_users(in_file)
+        export_users(users_0)
