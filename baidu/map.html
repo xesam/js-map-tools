@@ -44,12 +44,11 @@
         map.addEventListener('moveend', function (e) {
             var bound = map.getBounds();
             render.redraw(bound);
-            map.removeEventListener('moveend', this);
         });
 
         var render = (function (map, origin) {
-            var lat_step = 0.001;
-            var lng_step = 0.001;
+            var lat_step = 0.005;
+            var lng_step = 0.005;
 
             var cache = {};
 
