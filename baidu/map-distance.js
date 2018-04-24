@@ -6,6 +6,10 @@ let China = {
     EAST: 135.05
 };
 
+let Distance = {
+    
+}
+
 var defaultSteps = [0.1, 0.01, 0.001, 0.0001, 0.00001];
 
 function getDistance(map, sLng, sLat, eLng, eLat) {

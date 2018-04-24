@@ -8,51 +8,51 @@ function LocationPlayer(points) {
   this._isPaused = false;
 }
 
-LocationPlayer.prototype.onPlay = function(playCbk) {
+LocationPlayer.prototype.onPlay = function (playCbk) {
   this._onPlayCbk = playCbk;
   return this;
 };
 
-LocationPlayer.prototype.onPause = function(pauseCbk) {
+LocationPlayer.prototype.onPause = function (pauseCbk) {
   this._onPauseCbk = pauseCbk;
   return this;
 };
 
-LocationPlayer.prototype.onResume = function(resumeCbk) {
+LocationPlayer.prototype.onResume = function (resumeCbk) {
   this._onResumeCbk = resumeCbk;
   return this;
 };
 
-LocationPlayer.prototype.onStop = function(stopCbk) {
+LocationPlayer.prototype.onStop = function (stopCbk) {
   this._onStopCbk = stopCbk;
   return this;
 };
 
-LocationPlayer.prototype.onFinish = function(noMoreCbk) {
+LocationPlayer.prototype.onFinish = function (noMoreCbk) {
   this._onFinishCbk = noMoreCbk;
   return this;
 };
 
-LocationPlayer.prototype.inspect = function() {
+LocationPlayer.prototype.inspect = function () {
   console.log(this.playIndex, this._isPlaying, this._isPaused);
 };
 
-LocationPlayer.prototype._clearFlags = function() {
+LocationPlayer.prototype._clearFlags = function () {
   this._isPlaying = false;
   this._isPaused = false;
 };
 
-LocationPlayer.prototype._clearTimer = function() {
+LocationPlayer.prototype._clearTimer = function () {
   clearInterval(this._timerFlag);
 };
 
-LocationPlayer.prototype.reset = function() {
+LocationPlayer.prototype.reset = function () {
   this._clearTimer();
   this._clearFlags();
   this.playIndex = 0;
 };
 
-LocationPlayer.prototype.play = function(playCbk, finishCbk) {
+LocationPlayer.prototype.play = function (playCbk, finishCbk) {
   if (this._isPlaying) {
     return;
   }
@@ -67,12 +67,12 @@ LocationPlayer.prototype.play = function(playCbk, finishCbk) {
   this._isPlaying = true;
   this.next(playCbk, finishCbk);
   var _this = this;
-  this._timerFlag = setInterval(function() {
+  this._timerFlag = setInterval(function () {
     _this.next(playCbk, finishCbk);
   }, 1000 / this.fps);
 };
 
-LocationPlayer.prototype.next = function(playCbk, finishCbk) {
+LocationPlayer.prototype.next = function (playCbk, finishCbk) {
   if (this.playIndex >= this.points.length) {
     this.reset();
     this._onFinishCbk && this._onFinishCbk();
@@ -86,12 +86,12 @@ LocationPlayer.prototype.next = function(playCbk, finishCbk) {
   }
 };
 
-LocationPlayer.prototype.replay = function(playCbk, noMoreCbk) {
+LocationPlayer.prototype.replay = function (playCbk, noMoreCbk) {
   this.reset();
   this.play(playCbk, noMoreCbk);
 };
 
-LocationPlayer.prototype.stop = function(onStopCbk) {
+LocationPlayer.prototype.stop = function (onStopCbk) {
   if (!this._isPlaying) {
     return;
   }
@@ -101,7 +101,7 @@ LocationPlayer.prototype.stop = function(onStopCbk) {
   this.reset();
 };
 
-LocationPlayer.prototype.pause = function(onPauseCbk) {
+LocationPlayer.prototype.pause = function (onPauseCbk) {
   if (this._isPaused) {
     return;
   }
@@ -112,7 +112,7 @@ LocationPlayer.prototype.pause = function(onPauseCbk) {
   this._clearTimer();
 };
 
-LocationPlayer.prototype.resume = function(onResumeCbk) {
+LocationPlayer.prototype.resume = function (onResumeCbk) {
   if (!this._isPaused) {
     return;
   }
@@ -121,11 +121,11 @@ LocationPlayer.prototype.resume = function(onResumeCbk) {
   this.play();
 };
 
-LocationPlayer.prototype.addPoints = function(points) {
+LocationPlayer.prototype.addPoints = function (points) {
   this.points = this.points.concat(points);
 };
 
-LocationPlayer.prototype.updatePoints = function(points) {
+LocationPlayer.prototype.updatePoints = function (points) {
   this.reset();
   this.points = points;
 };
