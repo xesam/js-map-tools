@@ -14,11 +14,90 @@
     </div>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ttwaH5NADcpIkNc7wfMpKBpK"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-    <script src="map.js"></script>
     <script>
-        Map.init(function (map) {
-            
+        var coordinate_origin = [113, 23.3];
+
+        var map = new BMap.Map("map_container");
+        map.centerAndZoom(
+            new BMap.Point(coordinate_origin[0], coordinate_origin[1]),
+            16
+        );
+        map.addControl(
+            new BMap.MapTypeControl({
+                mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
+            })
+        );
+        map.enableScrollWheelZoom(true);
+        map.addEventListener('zoomend', function (e) {
+            // console.log(e.type);
+            // console.log(e.target.getZoom());
+            // var bound = map.getBounds();
+            // console.log(bound);
+            // add_rectangle(map, bound.getNorthEast(), bound.getSouthWest());
         });
+
+        map.addEventListener('movestart', function (e) {
+            var bound = map.getBounds();
+            // render.redraw(bound);
+        });
+
+        map.addEventListener('moveend', function (e) {
+            var bound = map.getBounds();
+            render.redraw(bound);
+            map.removeEventListener('moveend', this);
+        });
+
+        var render = (function (map, origin) {
+            var lat_step = 0.001;
+            var lng_step = 0.001;
+
+            var cache = {};
+
+            function new_rectangle(ne, sw) {
+                var rectangle = new BMap.Polygon([
+                    new BMap.Point(ne.lng, ne.lat),
+                    new BMap.Point(ne.lng, sw.lat),
+                    new BMap.Point(sw.lng, sw.lat),
+                    new BMap.Point(sw.lng, ne.lat)
+                ], {
+                    strokeColor: "blue",
+                    strokeWeight: 0.3
+                });
+                return rectangle;
+            }
+
+            function draw(x, y) {
+                var sw = new BMap.Point(origin[0] + x * lng_step, origin[1] + y * lat_step);
+                var ne = new BMap.Point(origin[0] + (x + 1) * lng_step, origin[1] + (y + 1) * lat_step);
+                var rectangle = new_rectangle(
+                    ne,
+                    sw);
+                if (!cache[x]) {
+                    cache[x] = {};
+                }
+                cache[x][y] = rectangle;
+
+                map.addOverlay(rectangle);
+            }
+
+            return {
+                redraw(bound) {
+                    let ne = bound.getNorthEast();
+                    let sw = bound.getSouthWest();
+                    let x1 = Math.floor((sw.lng - origin[0]) / lng_step);
+                    let y1 = Math.floor((sw.lat - origin[1]) / lat_step);
+                    let x2 = Math.ceil((ne.lng - origin[0]) / lng_step);
+                    let y2 = Math.ceil((ne.lat - origin[1]) / lat_step);
+                    console.log(x1, y1, x2, y2);
+                    console.log('count', (x2 - x1 + 1) * (y2 - y1 + 1))
+                    for (let x = x1; x < x2; x++) {
+                        for (let y = y1; y < y2; y++) {
+                            draw(x, y);
+                        }
+                    }
+                }
+            }
+        })(map, coordinate_origin);
     </script>
 </body>
 
