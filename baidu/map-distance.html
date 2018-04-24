@@ -8,37 +8,71 @@
     <title>map</title>
     <style type="text/css">
         body,
-        html,
-        #page,
-        #content {
+        html {
             width: 100%;
             height: 100%;
-            overflow: hidden;
             margin: 0;
             padding: 0;
             font-family: "微软雅黑";
             font-size: 12px;
         }
 
-        #content>div {
+        #page {
+            width: 100%;
             height: 100%;
-            width: 49%;
+        }
+
+        #content {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #content>div {
+            flex: 1;
+        }
+
+        .user-input>div {
+            padding: 0.5em;
+        }
+
+        .user-input label {
             display: inline-block;
-            overflow: hidden;
+            height: 2em;
+            line-height: 1;
+            min-width: 5em;
+            text-align: right;
         }
 
-        #content>div>div {
-            height: 10%;
-            overflow: auto;
-            padding-left: 24px;
+        .user-input input {
+            height: 2em;
+            line-height: 1;
         }
 
-        #content>div>ul {
+        .compute-out {
             margin: 0;
             padding: 0;
             list-style-type: none;
             height: 90%;
             overflow: auto;
+        }
+
+        .compute-out li {
+            line-height: 1.4em;
+            padding: 0.5em;
+        }
+
+        .compute-out li span {
+            display: inline-block
+        }
+
+        .compute-out li span:first-child {
+            min-width: 5em;
+            text-align: right;
         }
     </style>
 </head>
@@ -46,37 +80,39 @@
 <body>
     <div id="page">
         <div id="content">
-            <div id="lng-mapper">
-                <div>
+            <div id="lng-mapper" class="section-1">
+                <div class="user-input">
                     <div>
-                        <label for="lat">lat:</label>
+                        <label for="lat">纬度:</label>
                         <input type="text" id="lat" v-model.number="lat" placeholder="lat">
                     </div>
                     <div>
-                        <label for="lng-step">lng-step:</label>
+                        <label for="lng-step">经度步长:</label>
                         <input type="text" id="lng-step" v-model.number="lng_step" placeholder="lng-step">
                     </div>
                 </div>
-                <ul>
-                    <li v-for="(lng, index) in lngs">
-                        {{ lng[0] }} => {{ lng[1] }}
+                <ul class="compute-out">
+                    <li v-for="(vals, index) in values">
+                        <span>{{ vals[0] }}</span>:
+                        <span>{{ vals[1] }}</span>
                     </li>
                 </ul>
             </div>
             <div id="lat-mapper">
-                <div>
+                <div class="user-input">
                     <div>
-                        <label for="lat">lng:</label>
+                        <label for="lat">经度:</label>
                         <input type="text" id="lng" v-model.number="lng" placeholder="lng">
                     </div>
                     <div>
-                        <label for="lat-step">lat-step:</label>
+                        <label for="lat-step">纬度步长:</label>
                         <input type="text" id="lat-step" v-model.number="lat_step" placeholder="lat-step">
                     </div>
                 </div>
-                <ul>
-                    <li v-for="(lat, index) in lats">
-                        {{ lat[0] }} => {{ lat[1] }}
+                <ul class="compute-out">
+                    <li v-for="(vals, index) in values">
+                        <span>{{ vals[0] }}</span>:
+                        <span>{{ vals[1] }}</span>
                     </li>
                 </ul>
             </div>
@@ -94,14 +130,14 @@
                 lng_step: ''
             },
             computed: {
-                lngs: function () {
+                values: function () {
                     if (this.lat < China.SOUTH || this.lat > China.NORTH) {
                         return [];
                     }
-                    if(this.lng_step){
-                        return stepLngMapper(this.map, this.lat, [this.lng_step]);
-                    }else{
-                        return stepLngMapper(this.map, this.lat);
+                    if (this.lng_step) {
+                        return Distance.step_lng(this.map, this.lat, [this.lng_step]);
+                    } else {
+                        return Distance.step_lat(this.map, this.lat);
                     }
                 }
             }
@@ -114,14 +150,14 @@
                 lat_step: ''
             },
             computed: {
-                lats: function () {
+                values: function () {
                     if (this.lng < China.WEST || this.lng > China.EAST) {
                         return [];
                     }
-                    if(this.lat_step){
-                        return stepLatMapper(this.map, this.lng, [this.lat_step]);
-                    }else{
-                        return stepLatMapper(this.map, this.lng);
+                    if (this.lat_step) {
+                        return Distance.step_lat(this.map, this.lng, [this.lat_step]);
+                    } else {
+                        return Distance.step_lat(this.map, this.lng);
                     }
                 }
             }
