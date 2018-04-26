@@ -1,3 +1,11 @@
+Lines = (function () {
+    return {
+        load: function (date) {
+
+        }
+    }
+})();
+
 function Line() {
 
 }
