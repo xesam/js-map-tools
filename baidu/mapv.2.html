@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>map</title>
+    <link rel="stylesheet" type="text/css" href="map.css">
+</head>
+
+<body>
+    <div id="map_container">
+        <div id=""></div>
+    </div>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ttwaH5NADcpIkNc7wfMpKBpK"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="./mapv.js"></script>
+    <script src="./mapv.2.data.js"></script>
+    <script>
+        var coordinate_origin = [113, 23.3];
+
+        var map = new BMap.Map("map_container");
+        map.centerAndZoom(
+            new BMap.Point(coordinate_origin[0], coordinate_origin[1]),
+            16
+        );
+        map.addControl(
+            new BMap.MapTypeControl({
+                mapTypes: [BMAP_NORMAL_MAP, BMAP_HYBRID_MAP]
+            })
+        );
+        map.enableScrollWheelZoom(true);
+        var mapv = new Mapv({
+            drawTypeControl: true,
+            map: map
+        });
+
+        var layer = new Mapv.Layer({
+            zIndex: 1,
+            mapv: mapv,
+            dataType: 'polygon',
+            data: data,
+            drawType: 'intensity',
+            drawOptions: {
+                // max: 5000,
+                // label: { // 显示label文字
+                //     show: true, // 是否显示
+                //     font: "11px", // 设置字号
+                //     minZoom: 7, // 最小显示的级别
+                //     fillStyle: 'rgba(255, 255, 255, 1)' // label颜色
+                // },
+                // gradient: {
+                //     '0.01': 'blue',
+                //     '0.1': 'cyan',
+                //     '0.2': 'lime',
+                //     '0.3': 'yellow',
+                //     '1.0': 'red'
+                // },
+            }
+        });
+    </script>
+</body>
+
+</html>
