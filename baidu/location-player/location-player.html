@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
     <title>map</title>
-    <link rel="stylesheet" type="text/css" href="map.css">
+    <link rel="stylesheet" type="text/css" href="../map.demo.css">
 </head>
 
 <body>
@@ -22,17 +22,15 @@
     </div>
     <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ttwaH5NADcpIkNc7wfMpKBpK"></script>
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
-    <script src="map.js"></script>
-    <script src="./core/converter.js"></script>
-    <script src="./core/overlay.js"></script>
+    <script src="../map.demo.js"></script>
+    <script src="../core/converter.js"></script>
+    <script src="../core/overlay.js"></script>
     <script src="location-player.js"></script>
-    <script src="F:\workspace\app-od\out\okBHq0NKqNPqyElyWhxCfaKp8XVw.js"></script>
+    <script src="F:\workspace\app.od\tmp_out\bfc460401b92a5f800b8829ffff68d99044ce6aa.js"></script>
     <script>
-
-
-        var data = okBHq0NKqNPqyElyWhxCfaKp8XVw.map(ele=>{
+        var data = u_data.map(ele => {
             return [ele[1], ele[2]];
-        })
+        });
 
         Map.init(function (map) {
             var player = new LocationPlayer(data)
