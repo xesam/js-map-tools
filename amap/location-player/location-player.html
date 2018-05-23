@@ -22,28 +22,23 @@
     <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
     <script src="../map.demo.js"></script>
     <script src="../../core/location-player/location-player.js"></script>
-    <script src="F:\workspace\app.od\tmp_out\1c48a3523665cabd998cf7e1f974d2c84a31ff6a"></script>
+    <script src="F:\workspace\app.od\tmp_out\2ce3dff5-1eba-44dd-b09e-f15b65856513"></script>
     <script>
+        function inspect(data) {
+            return data.map(ele => {
+                return [new Date(ele[0]), ele[1], ele[2], ele[3]];
+            })
+        }
         Map.init('map_container', function (map) {
             var data = u_data.map(ele => {
                 return [ele[1], ele[2]];
             });
             var player = new LocationPlayer(data).onPlay(function (point, playIndex, total) {
                 console.log('onPlay', playIndex);
-                var circleMarker = new AMap.CircleMarker({
-                    center: point,
-                    radius: 5,
-                    strokeColor: "white",
-                    strokeWeight: 2,
-                    strokeOpacity: 0.5,
-                    fillColor: "rgba(255,0,0,1)",
-                    fillOpacity: 0.8,
-                    zIndex: 10,
-                    bubble: true,
-                    cursor: "pointer",
-                    clickable: true
+                var marker = new AMap.Marker({
+                    position: point,
+                    map: map
                 });
-                circleMarker.setMap(map);
             }).onPause(function () {
                 console.log('onPause');
             }).onResume(function () {
