@@ -1,0 +1,63 @@
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="../map.demo.css">
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.4&key=9ab008b291ee69781485ab1adce836d8"></script>
+    <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+</head>
+
+<body>
+    <div id="map_container"></div>
+    <div id="map_control">
+        <button id="play">play</button>
+        <button id="next">next</button>
+        <button id="stop">stop</button>
+        <button id="pause">pause</button>
+        <button id="resume">resume</button>
+        <button id="replay">replay</button>
+        <button id="addPath">addPath</button>
+        <button id="updatePath">updatePath</button>
+    </div>
+    <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+    <script src="../map.demo.js"></script>
+    <script src="../../core/location-player/location-player.js"></script>
+    <script src="F:\workspace\app.od\tmp_out\2ce3dff5-1eba-44dd-b09e-f15b65856513"></script>
+    <script>
+        function inspect(data) {
+            return data.map(ele => {
+                return [new Date(ele[0]), ele[1], ele[2], ele[3]];
+            })
+        }
+        Map.init('map_container', function (map) {
+            var data = u_data.map(ele => {
+                return [ele[1], ele[2]];
+            });
+            var player = new LocationPlayer(data).onPlay(function (point, playIndex, total) {
+                console.log('onPlay', playIndex);
+                var marker = new AMap.Marker({
+                    position: point,
+                    map: map
+                });
+            }).onPause(function () {
+                console.log('onPause');
+            }).onResume(function () {
+                console.log('onResume');
+            }).onStop(function () {
+                console.log('onStop');
+            }).onFinish(function () {
+                console.log('onFinish');
+            });
+
+            function _click(id, fn) {
+                document.getElementById(id).addEventListener('click',
+                    fn);
+            }
+            _click('play', function () {
+                player.play();
+            });
+        });
+    </script>
+</body>
+
+</html>
