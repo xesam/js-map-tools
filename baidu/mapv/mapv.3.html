@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <title>map</title>
+    <link rel="stylesheet" type="text/css" href="../map.demo.css">
+</head>
+
+<body>
+    <div id="map_container">
+        <div id=""></div>
+    </div>
+    <script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=ttwaH5NADcpIkNc7wfMpKBpK"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="./node_modules/mapv/build/mapv.js"></script>
+    <script>
+        // 百度地图API功能
+        var map = new BMap.Map("map_container", {
+            enableMapClick: false
+        }); // 创建Map实例
+        map.centerAndZoom(new BMap.Point(105.403119, 38.028658), 5); // 初始化地图,设置中心点坐标和地图级别
+        map.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+
+        map.setMapStyle({
+            style: 'light'
+        });
+
+        var randomCount = 50;
+        var data = [];
+        data.push({
+            geometry: {
+                type: 'LineString',
+                coordinates: [[113, 23], [113, 25]]
+            },
+            count: 30 * Math.random()
+        });
+        data.push({
+            geometry: {
+                type: 'LineString',
+                coordinates: [[114, 23], [113, 25]]
+            },
+            count: 30 * Math.random()
+        });
+        data.push({
+            geometry: {
+                type: 'Polygon',
+                coordinates: [
+                    [
+                        [124, 23],
+                        [124, 25],
+                        [123, 25],
+                        [123, 23],
+                        [124, 23]
+                    ]
+                ]
+            },
+            count: 30 * Math.random()
+        });
+
+        data.push({
+            geometry: {
+                type: 'Polygon',
+                coordinates: [
+                    [
+                        [123, 23],
+                        [123, 25],
+                        [125, 24],
+                        [123, 23]
+                    ]
+                ]
+            },
+            count: 30 * Math.random()
+        });
+
+        var dataSet = new mapv.DataSet(data);
+
+        var options = {
+            fillStyle: 'red',
+            strokeStyle: 'red',
+            lineWidth: 1,
+            draw: 'simple'
+        }
+
+        var mapvLayer = new mapv.baiduMapLayer(map, dataSet, options);
+    </script>
+</body>
+
+</html>
