@@ -1,0 +1,57 @@
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="stylesheet" type="text/css" href="./map.demo.css" />
+        <script
+            type="text/javascript"
+            src="http://webapi.amap.com/maps?v=1.4.4&key=9ab008b291ee69781485ab1adce836d8"
+        ></script>
+        <script src="http://webapi.amap.com/ui/1.0/main.js?v=1.0.11"></script>
+    </head>
+
+    <body>
+        <div id="map_container"></div>
+        <div id="map_control">
+            <button id="start">开始</button>
+            <input type="text" id="wgs84" value="113.033712, 23.079352" />
+        </div>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+        <script src="./map.demo.js"></script>
+        <script>
+            const CENTER = [113.033712, 23.079352];
+            // var tester = [113.031712, 23.079352];
+            // AMap.convertFrom(tester, "gps", function(status, result) {
+            //     if (result.info === "ok") {
+            //         var lnglats = result.locations; // Array.<LngLat>
+            //         let lnglat = [lnglats[0].lng, lnglats[0].lat];
+            //         console.log(lnglat);
+            //         var dis = AMap.GeometryUtil.distance(CENTER, lnglat);
+            //         console.log(dis);
+            //     }
+            // });
+            Map.init("map_container", function(map) {
+                let marker = new AMap.Marker({
+                    position: new AMap.LngLat(...CENTER) // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                });
+                map.add(marker);
+                let tester = new AMap.Marker({
+                    position: new AMap.LngLat(...CENTER) // 经纬度对象，也可以是经纬度构成的一维数组[116.39, 39.9]
+                });
+                map.add(tester);
+                $("#start").click(() => {
+                    let value = $("#wgs84").val();
+                    console.log(value);
+                    let input = value.split(",").map(parseFloat);
+                    AMap.convertFrom(input, "gps", function(status, result) {
+                        if (result.info === "ok") {
+                            var lnglats = result.locations; // Array.<LngLat>
+                            let lnglat = [lnglats[0].lng, lnglats[0].lat];
+                            console.log(lnglat);
+                            tester.setPosition(lnglat);
+                        }
+                    });
+                });
+            });
+        </script>
+    </body>
+</html>
