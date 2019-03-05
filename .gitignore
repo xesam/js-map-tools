@@ -4,3 +4,5 @@ package-lock.json
 tmp*
 *.csv
 data
+.idea
+*.iml
