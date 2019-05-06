@@ -1,0 +1,72 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="../../style/map.css" />
+        <script
+            type="text/javascript"
+            src="https://webapi.amap.com/maps?v=1.4.14&key=1ce15c41f17886c1fd0836399b799586"
+        ></script>
+    </head>
+
+    <body>
+        <div id="map_container"></div>
+        <div id="map_control">
+            <div>
+                <button id="patch_add">+patch</button>
+                <button id="patch_minus">-patch</button>
+                <button id="rotation_add">+rotation</button>
+                <button id="rotation_minus">-rotation</button>
+                <button id="start_rotating">start rotating</button>
+                <button id="stop_rotating">stop rotating</button>
+                <button id="start_zoom">start zoom</button>
+                <button id="stop_zoom">stop zoom</button>
+                <button id="prism">prirm</button>
+            </div>
+        </div>
+        <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.js"></script>
+        <script>
+            var map = new AMap.Map("map_container", {
+                resizeEnable: true,
+                zoom: 1,
+                center: [116, 39],
+                pitch: 50,
+                mapStyle: "amap://styles/aaadd24c5d8483a20ded5cea742dcecc"
+            });
+            // 获取 canvas 实例
+            var canvas = document.createElement("canvas");
+
+            // 将 canvas 宽高设置为地图实例的宽高
+            canvas.width = map.getSize().width;
+            canvas.height = map.getSize().height;
+
+            // 创建一个自定义图层
+            var customLayer = new AMap.CustomLayer(canvas, {
+                zIndex: 12,
+                zooms: [1, 18] // 设置可见级别，[最小级别，最大级别]
+            });
+            map.add(customLayer);
+            // 自定义的 render 方法
+            function onRender() {
+                //wuhan 114,30
+                //北京 116, 39
+                var ctx = canvas.getContext("2d");
+                ctx.clearRect(0, 0, 2000, 2000);
+                ctx.fillStyle = "#08f";
+                ctx.strokeStyle = "#fff";
+
+                let leftTop = map.lngLatToContainer(new AMap.LngLat(116, 39));
+                let rightBottom = map.lngLatToContainer(
+                    new AMap.LngLat(114, 30)
+                );
+                ctx.fillRect(
+                    leftTop.x,
+                    leftTop.y,
+                    rightBottom.x - leftTop.x,
+                    rightBottom.y - leftTop.y
+                );
+            }
+
+            // 将自定义的 render 方法挂在自定义图层的 render 属性上
+            customLayer.render = onRender;
+        </script>
+    </body>
+</html>
